@@ -6,8 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class UserViewModel(application: Application) : ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    application: Application
+) : ViewModel() {
 
     val userList: LiveData<List<User>>
     private val repository: UserRepository

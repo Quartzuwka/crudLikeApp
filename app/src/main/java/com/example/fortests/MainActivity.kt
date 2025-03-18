@@ -1,4 +1,5 @@
 package com.example.fortests
+
 import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -28,36 +29,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
-class UserViewModelFactory(val application: Application) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return UserViewModel(application) as T
-    }
-}
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val owner = LocalViewModelStoreOwner.current
 
-            owner?.let {
-                val viewModel: UserViewModel = viewModel(
-                    it,
-                    "UserViewModel",
-                    UserViewModelFactory(LocalContext.current.applicationContext as Application)
-                )
+                val viewModel: UserViewModel = hiltViewModel()
+
                 Main(viewModel)
+
             }
         }
     }
-}
+
 
 
 @Composable
