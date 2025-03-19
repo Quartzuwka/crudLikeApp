@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
             })
 
             Column {
-                RandomDuckImage("https://random-d.uk/api/185.jpg")
+//                RandomDuckImage("https://random-d.uk/api/185.jpg")
                 Text(modifier = Modifier, text = viewModel.imagesCount.toString())
                 Main(viewModel)
             }

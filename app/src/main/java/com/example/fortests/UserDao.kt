@@ -15,4 +15,8 @@ interface UserDao {
 
     @Query("DELETE FROM users WHERE userId = :id")
     fun deleteUser(id:Int)
+
+    @Query("SELECT MAX(userId) FROM users")
+    fun getMaxId(): Int?
+
 }

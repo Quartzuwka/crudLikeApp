@@ -10,6 +10,10 @@ class UserRepository(private val userDao: UserDao) {
 
     val userList: LiveData<List<User>> = userDao.getUsers()
 
+    suspend fun getMaxId(): Int {
+        return userDao.getMaxId() ?: 0
+    }
+
     fun addUser(User: User) {
         coroutineScope.launch(Dispatchers.IO) {
             userDao.addUser(User)

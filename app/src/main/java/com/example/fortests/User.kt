@@ -1,19 +1,23 @@
 package com.example.fortests
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@androidx.room.Entity(tableName = "users")
+
+@Entity(tableName = "users")
 class User {
-    @androidx.room.PrimaryKey(autoGenerate = true)
-    @androidx.annotation.NonNull
-    @androidx.room.ColumnInfo(name = "userId")
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "userId")
     var id: Int = 0
-    @androidx.room.ColumnInfo(name = "userName")
+    @ColumnInfo(name = "userName")
     var name: String=""
     var age: Int = 0
 
-    constructor() {}
+//    constructor(name: String, age: Int) : this(0, name, age)
 
-    constructor(name: String, age: Int) {
+    constructor(id: Int, name: String, age: Int) {
+        this.id = id
         this.name = name
         this.age = age
     }

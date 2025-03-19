@@ -10,6 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.fortests.duckrepo.DuckImagesRepo
 import com.example.fortests.network.KtorClient
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,7 +48,19 @@ class UserViewModel @Inject constructor(
         userAge = value.toIntOrNull()?:userAge
     }
     fun addUser() {
-        repository.addUser(User(userName, userAge))
+        CoroutineScope(Dispatchers.IO).launch {
+            // Получаем максимальный id и увеличиваем на 1
+            val maxId = repository.getMaxId()
+            val newId = maxId + 1
+
+            // Создаем пользователя с новым id
+            val user = User(newId, userName, userAge)
+            repository.addUser(user)
+
+            // Сбрасываем поля ввода
+            userName = ""
+            userAge = 0
+        }
     }
     fun deleteUser(id: Int) {
         repository.deleteUser(id)
