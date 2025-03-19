@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.devtoolsKsp)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -47,8 +48,11 @@ android {
 dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
 
+    implementation(libs.bundles.ktor)
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    implementation(libs.coil.compose)
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.core.ktx)
