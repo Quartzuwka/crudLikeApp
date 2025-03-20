@@ -6,12 +6,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 
-//@Composable
-//fun RandomDuckImage(imageUrl: String, modifier: Modifier = Modifier) {
-//    AsyncImage(
-//        model = imageUrl,
-//        contentDescription = "Character image",
-//
-//    )
-//}
-//
+@Composable
+fun RandomDuckImage(imageUrl: String, modifier: Modifier = Modifier) {
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = "Character image",
+
+    )
+}
+

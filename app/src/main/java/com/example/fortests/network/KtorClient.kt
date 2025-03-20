@@ -13,9 +13,7 @@ import io.ktor.client.plugins.logging.Logger
 
 import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.request.get
-import io.ktor.client.statement.HttpResponse
 import kotlinx.serialization.Serializable
-import kotlin.collections.set
 
 class KtorClient {
 

@@ -8,11 +8,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fortests.duckrepo.DuckImagesRepo
-import com.example.fortests.network.KtorClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,46 +23,61 @@ class UserViewModel @Inject constructor(
 
     val userList: LiveData<List<User>>
     private val repository: UserRepository
-    var userName by mutableStateOf("")
-    var userAge by mutableStateOf(0)
-    var imagesCount by mutableStateOf(0)
+    var imagesIds by mutableStateOf(0)
 
-    fun fetchAllImagesCount(): Int {
-        viewModelScope.launch {
-            imagesCount = duckImagesRepo.fetchAmountOfImages()
-             }
-        return imagesCount
-    }
+    var image_сount by mutableStateOf(0)
 
     init {
-        imagesCount = fetchAllImagesCount()
+        image_сount = fetchAllImagesCount()
         val userDb = UserRoomDatabase.getInstance(application)
         val userDao = userDb.userDao()
         repository = UserRepository(userDao)
         userList = repository.userList
+        viewModelScope.launch {
+            imagesIds = withContext(Dispatchers.IO) {
+                repository.getMaxId()
+            }
+        }
     }
-    fun changeName(value: String){
-        userName = value
-    }
-    fun changeAge(value: String){
-        userAge = value.toIntOrNull()?:userAge
-    }
-    fun addUser() {
-        CoroutineScope(Dispatchers.IO).launch {
-            // Получаем максимальный id и увеличиваем на 1
-            val maxId = repository.getMaxId()
-            val newId = maxId + 1
 
-            // Создаем пользователя с новым id
-            val user = User(newId, userName, userAge)
-            repository.addUser(user)
 
-            // Сбрасываем поля ввода
-            userName = ""
-            userAge = 0
+    fun fetchAllImagesCount(): Int {
+        viewModelScope.launch {
+            image_сount = duckImagesRepo.fetchAmountOfImages()
+             }
+        return image_сount
+    }
+
+    fun addMultipleUsers(users: List<User>) {
+        viewModelScope.launch {
+            repository.insertAll(users)
+        }
+    }
+
+    fun loadImages() {
+        viewModelScope.launch {
+            val images = duckImagesRepo.fetchImages() // Получаем список строк
+            if (!images.isNullOrEmpty()) {
+                // Создаем список пользователей
+                val users = images.take(10).mapIndexed { index, imageName ->
+                    imagesIds++
+                    User(
+                        id = imagesIds, // Генерируем id вручную
+                        name = imageName
+                    )
+
+                }
+
+                addMultipleUsers(users)
+            }
         }
     }
     fun deleteUser(id: Int) {
+        imagesIds--
         repository.deleteUser(id)
+    }
+
+    fun displayImage(user: User) {
+        println("123")
     }
 }

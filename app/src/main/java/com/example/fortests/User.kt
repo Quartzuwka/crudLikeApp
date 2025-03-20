@@ -12,13 +12,13 @@ class User {
     var id: Int = 0
     @ColumnInfo(name = "userName")
     var name: String=""
-    var age: Int = 0
+
 
 //    constructor(name: String, age: Int) : this(0, name, age)
 
-    constructor(id: Int, name: String, age: Int) {
+    constructor(id: Int, name: String) {
         this.id = id
         this.name = name
-        this.age = age
+
     }
 }
