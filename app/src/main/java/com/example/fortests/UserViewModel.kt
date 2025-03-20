@@ -24,7 +24,8 @@ class UserViewModel @Inject constructor(
     val userList: LiveData<List<User>>
     private val repository: UserRepository
     var imagesIds by mutableStateOf(0)
-
+    var imageString by mutableStateOf("https://random-d.uk/api/185.jpg")
+        private set
     var image_сount by mutableStateOf(0)
 
     init {
@@ -78,6 +79,6 @@ class UserViewModel @Inject constructor(
     }
 
     fun displayImage(user: User) {
-        println("123")
+        imageString = "https://random-d.uk/api/${user.name}.jpg"
     }
 }

@@ -39,14 +39,7 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(key1 = Unit, block = {
                 viewModel.fetchAllImagesCount()
             })
-
-            Column {
-                RandomDuckImage("https://random-d.uk/api/185.jpg")
-                Text(modifier = Modifier, text = viewModel.image_сount.toString())
                 Main(viewModel)
-            }
-
-
         }
     }
 }
@@ -56,6 +49,7 @@ class MainActivity : ComponentActivity() {
 fun Main(vm: UserViewModel = viewModel()) {
     val userList by vm.userList.observeAsState(listOf())
     Column {
+        RandomDuckImage(vm.imageString)
         Button({ vm.loadImages() }, Modifier.padding(8.dp)) { Text("Add", fontSize = 22.sp) }
         UserList(users = userList, delete = { vm.deleteUser(it) }, display = { vm.displayImage(it) })
     }
