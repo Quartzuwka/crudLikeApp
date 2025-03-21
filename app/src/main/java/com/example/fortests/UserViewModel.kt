@@ -81,4 +81,9 @@ class UserViewModel @Inject constructor(
     fun displayImage(user: User) {
         imageString = "https://random-d.uk/api/${user.name}.jpg"
     }
+
+    fun deleteAll() {
+        imagesIds = 0
+        repository.deleteAll()
+    }
 }

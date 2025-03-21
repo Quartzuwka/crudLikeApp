@@ -23,4 +23,6 @@ interface UserDao {
     @Query("SELECT MAX(userId) FROM users")
     suspend fun getMaxId(): Int?
 
+    @Query("DELETE FROM users")
+    suspend fun deleteAll()
 }

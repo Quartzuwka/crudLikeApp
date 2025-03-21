@@ -5,11 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -49,8 +52,18 @@ class MainActivity : ComponentActivity() {
 fun Main(vm: UserViewModel = viewModel()) {
     val userList by vm.userList.observeAsState(listOf())
     Column {
-        RandomDuckImage(vm.imageString)
-        Button({ vm.loadImages() }, Modifier.padding(8.dp)) { Text("Add", fontSize = 22.sp) }
+        Box() {
+            RandomDuckImage(vm.imageString)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button({ vm.loadImages() }, Modifier.padding(8.dp)) { Text("Add", fontSize = 22.sp) }
+            Button({ vm.deleteAll() }, Modifier.padding(8.dp)) {
+                Text("Delete all", fontSize = 22.sp)
+            }
+        }
         UserList(users = userList, delete = { vm.deleteUser(it) }, display = { vm.displayImage(it) })
     }
 }

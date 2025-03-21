@@ -29,4 +29,9 @@ class UserRepository(private val userDao: UserDao) {
             userDao.deleteUser(id)
         }
     }
+    fun deleteAll() {
+        coroutineScope.launch(Dispatchers.IO) {
+            userDao.deleteAll()
+        }
+    }
 }
