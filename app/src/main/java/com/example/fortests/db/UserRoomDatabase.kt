@@ -1,4 +1,4 @@
-package com.example.fortests
+package com.example.fortests.db
 
 import android.content.Context
 import androidx.room.Database

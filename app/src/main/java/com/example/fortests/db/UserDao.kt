@@ -1,4 +1,4 @@
-package com.example.fortests
+package com.example.fortests.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

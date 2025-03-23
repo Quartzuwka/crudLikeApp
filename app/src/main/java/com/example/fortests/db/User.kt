@@ -1,4 +1,4 @@
-package com.example.fortests
+package com.example.fortests.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
