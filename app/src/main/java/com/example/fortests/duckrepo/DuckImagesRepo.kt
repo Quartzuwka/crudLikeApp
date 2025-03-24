@@ -1,18 +1,28 @@
 package com.example.fortests.duckrepo
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.fortests.network.KtorClient
 import javax.inject.Inject
 
 class DuckImagesRepo @Inject constructor(private val ktorClient: KtorClient) {
 
+    var list: MutableList<String> = mutableListOf()
+
+
+    suspend fun fetchNextData(): List<String> {
+        for(i in 1..10) list.removeAt(0)
+        return list.take(10)
+    }
 
     suspend fun fetchAmountOfImages(): Int {
         return ktorClient.getAmountOfImages().image_count
     }
 
     suspend fun fetchImages(): List<String> {
-        return ktorClient.getAmountOfImages().images.take(10)
+        list.addAll(ktorClient.getAmountOfImages().images)
+        return list.take(10)
     }
 
     companion object

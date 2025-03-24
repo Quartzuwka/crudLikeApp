@@ -24,11 +24,24 @@ class SecondViewModel @Inject constructor(
     private val fetchedImages = mutableListOf<String>()
 
     fun fetchInitialImages() = viewModelScope.launch {
-
         val initialData = duckImagesRepo.fetchImages()
         _viewState.update {
             DuckViewState.GridDisplay(ducks = initialData)
         }
     }
 
+    fun fetchNextImages() = viewModelScope.launch {
+        val data = duckImagesRepo.fetchNextData()
+        _viewState.update { currentState ->
+            when (currentState) {
+                is DuckViewState.GridDisplay -> {
+                    val updatedDucks = currentState.ducks + data // Добавляем новые данные
+                    DuckViewState.GridDisplay(ducks = updatedDucks)
+                }
+
+                else -> currentState // Возвращаем исходное состояние, если оно не GridDisplay
+            }
+        }
+
+    }
 }
