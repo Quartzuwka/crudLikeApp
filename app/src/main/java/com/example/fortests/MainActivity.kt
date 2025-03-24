@@ -48,9 +48,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.fortests.components.RandomDuckImage
 import com.example.fortests.db.User
 import com.example.fortests.navigation.Destinations
 import com.example.fortests.navigation.TopLevelDestinations
+import com.example.fortests.second.SecondScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -165,7 +167,7 @@ fun Main(vm: UserViewModel = viewModel()) {
 
 @Composable
 fun UserList(users: List<User>, delete: (Int) -> Unit, display: (User) -> Unit) {
-    LazyColumn(Modifier.fillMaxWidth().padding(bottom = 200.dp)) {
+    LazyColumn(Modifier.fillMaxWidth().padding(bottom = 80.dp)) {
         item { UserTitleRow() }
         items(users) { u -> UserRow(u, { delete(u.id) }, { display(u) }) }
     }
@@ -222,17 +224,9 @@ fun AppNavigation(
             Main(viewModel)
         }
         composable<Destinations.Two> {
-            Second()
+            SecondScreen()
         }
     }
 }
 
-@Composable
-fun Second(modifier: Modifier = Modifier) {
-    Text("123456781354123523452345")
-}
 
-@Composable
-fun First(modifier: Modifier = Modifier) {
-    Text("123")
-}

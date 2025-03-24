@@ -11,11 +11,9 @@ class DuckImagesRepo @Inject constructor(private val ktorClient: KtorClient) {
         return ktorClient.getAmountOfImages().image_count
     }
 
-    suspend fun fetchImages(): List<String>? {
-        return ktorClient.getAmountOfImages().images
+    suspend fun fetchImages(): List<String> {
+        return ktorClient.getAmountOfImages().images.take(10)
     }
-
-
 
     companion object
 }

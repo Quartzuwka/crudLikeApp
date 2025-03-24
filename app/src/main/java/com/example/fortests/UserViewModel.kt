@@ -11,8 +11,12 @@ import com.example.fortests.db.User
 import com.example.fortests.db.UserRepository
 import com.example.fortests.db.UserRoomDatabase
 import com.example.fortests.duckrepo.DuckImagesRepo
+import com.example.fortests.second.DuckViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -62,7 +66,7 @@ class UserViewModel @Inject constructor(
             val images = duckImagesRepo.fetchImages() // Получаем список строк
             if (!images.isNullOrEmpty()) {
                 // Создаем список пользователей
-                val users = images.take(10).mapIndexed { index, imageName ->
+                val users = images.shuffled().take(10).mapIndexed { index, imageName ->
                     imagesIds++
                     User(
                         id = imagesIds, // Генерируем id вручную

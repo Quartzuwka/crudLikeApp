@@ -21,8 +21,16 @@ class KtorClient {
     data class ApiResponse(
         val http: List<String>? = null,
         val image_count: Int = 0,
-        val images: List<String>? = null
+        val images: List<String>
     )
+
+    fun ApiResponse.toApiResponse(): ApiResponse{
+        return ApiResponse(
+            http = http,
+            image_count = image_count,
+            images = images
+        )
+    }
 
     private val client = HttpClient(OkHttp) {
         defaultRequest { url("https://random-d.uk/api/v2/") }
@@ -40,7 +48,9 @@ class KtorClient {
     }
 
     suspend fun getAmountOfImages(): ApiResponse {
-        val data: ApiResponse = client.get("list").body<ApiResponse>()
-        return data
+            return client.get("list")
+                .body<ApiResponse>()
+                .toApiResponse()
     }
 }
+
