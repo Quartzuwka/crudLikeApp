@@ -5,30 +5,24 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
-
 import io.ktor.client.plugins.logging.Logger
-
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.request.get
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 class KtorClient {
 
     @Serializable
     data class ApiResponse(
-        val http: List<String>? = null,
-        val image_count: Int = 0,
-        val images: List<String>
+        val http: List<String>? = null, val image_count: Int = 0, val images: List<String>
     )
 
-    fun ApiResponse.toApiResponse(): ApiResponse{
+    fun ApiResponse.toApiResponse(): ApiResponse {
         return ApiResponse(
-            http = http,
-            image_count = image_count,
-            images = images
+            http = http, image_count = image_count, images = images
         )
     }
 
@@ -48,9 +42,7 @@ class KtorClient {
     }
 
     suspend fun getAmountOfImages(): ApiResponse {
-            return client.get("list")
-                .body<ApiResponse>()
-                .toApiResponse()
+        return client.get("list").body<ApiResponse>().toApiResponse()
     }
 }
 

@@ -18,7 +18,7 @@ interface UserDao {
     suspend fun insertAll(users: List<User>)
 
     @Query("DELETE FROM users WHERE userId = :id")
-    fun deleteUser(id:Int)
+    fun deleteUser(id: Int)
 
     @Query("SELECT MAX(userId) FROM users")
     suspend fun getMaxId(): Int?

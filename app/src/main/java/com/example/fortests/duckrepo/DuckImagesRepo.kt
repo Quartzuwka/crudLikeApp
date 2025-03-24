@@ -1,8 +1,6 @@
 package com.example.fortests.duckrepo
 
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.fortests.network.KtorClient
 import javax.inject.Inject
 
@@ -12,7 +10,7 @@ class DuckImagesRepo @Inject constructor(private val ktorClient: KtorClient) {
 
 
     suspend fun fetchNextData(): List<String> {
-        for(i in 1..10) list.removeAt(0)
+        for (i in 1..10) list.removeAt(0)
         return list.take(10)
     }
 
@@ -25,6 +23,5 @@ class DuckImagesRepo @Inject constructor(private val ktorClient: KtorClient) {
         return list.take(10)
     }
 
-    companion object
 }
 

@@ -75,9 +75,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
-                            top = statusBarHeight
-                                .asPaddingValues()
-                                .calculateTopPadding()
+                            top = statusBarHeight.asPaddingValues().calculateTopPadding()
                         )
                         .consumeWindowInsets(WindowInsets.statusBars)
                         .statusBarsPadding(),
@@ -85,8 +83,7 @@ class MainActivity : ComponentActivity() {
                         BottomBarNav(navController = navController)
                     }) { innerPadding ->
                     AppNavigation(
-                        navController = navController,
-                        modifier = Modifier.padding(innerPadding)
+                        navController = navController, modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
@@ -99,15 +96,14 @@ class MainActivity : ComponentActivity() {
 fun BottomBarNav(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination: NavDestination? = navBackStackEntry?.destination
-    val showBottomNav = TopLevelDestinations.entries.map { it.route::class }.any { route ->
+    TopLevelDestinations.entries.map { it.route::class }.any { route ->
 
         currentDestination?.hierarchy?.any {
             it.hasRoute(route)
         } == true
     }
     BottomAppBar(
-        modifier = Modifier
-            .clip(shape = RoundedCornerShape(30.dp)),
+        modifier = Modifier.clip(shape = RoundedCornerShape(30.dp)),
         containerColor = Color(0xFF6A6565),
         contentColor = Color(0xFF393838)
     ) {
@@ -117,28 +113,25 @@ fun BottomBarNav(navController: NavHostController) {
                 currentDestination?.hierarchy?.any { it.hasRoute(bottomNavigationItem.route::class) } == true
 
             if (currentDestination != null) {
-                NavigationBarItem(selected = isSelected,
-                    colors = NavigationBarItemColors(
-                        selectedIconColor = Color(0xFF232222),
-                        selectedTextColor = Color(0xFF999797),
-                        selectedIndicatorColor = Color(0xFFF2EDED),
-                        unselectedIconColor = Color(0xFFB0ACAC),
-                        unselectedTextColor = Color(0xFF625F5F),
-                        disabledIconColor = Color.Green,
-                        disabledTextColor = Color.Green
-                    ),
-                    onClick = {
-                        navController.navigate(bottomNavigationItem.route)
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = if (isSelected) bottomNavigationItem.selectedIcon else bottomNavigationItem.unselectedIcon,
-                            contentDescription = bottomNavigationItem.label
-                        )
-                    }, alwaysShowLabel = isSelected,
-                    label = {
-                        Text(bottomNavigationItem.label)
-                    })
+                NavigationBarItem(
+                    selected = isSelected, colors = NavigationBarItemColors(
+                    selectedIconColor = Color(0xFF232222),
+                    selectedTextColor = Color(0xFF999797),
+                    selectedIndicatorColor = Color(0xFFF2EDED),
+                    unselectedIconColor = Color(0xFFB0ACAC),
+                    unselectedTextColor = Color(0xFF625F5F),
+                    disabledIconColor = Color.Green,
+                    disabledTextColor = Color.Green
+                ), onClick = {
+                    navController.navigate(bottomNavigationItem.route)
+                }, icon = {
+                    Icon(
+                        imageVector = if (isSelected) bottomNavigationItem.selectedIcon else bottomNavigationItem.unselectedIcon,
+                        contentDescription = bottomNavigationItem.label
+                    )
+                }, alwaysShowLabel = isSelected, label = {
+                    Text(bottomNavigationItem.label)
+                })
             }
         }
     }
@@ -149,25 +142,29 @@ fun BottomBarNav(navController: NavHostController) {
 fun Main(vm: UserViewModel = viewModel()) {
     val userList by vm.userList.observeAsState(listOf())
     Column {
-        Box() {
+        Box {
             RandomDuckImage(vm.imageString)
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button({ vm.loadImages() }, Modifier.padding(8.dp)) { Text("Add", fontSize = 22.sp) }
             Button({ vm.deleteAll() }, Modifier.padding(8.dp)) {
                 Text("Delete all", fontSize = 22.sp)
             }
         }
-        UserList(users = userList, delete = { vm.deleteUser(it) }, display = { vm.displayImage(it) })
+        UserList(
+            users = userList,
+            delete = { vm.deleteUser(it) },
+            display = { vm.displayImage(it) })
     }
 }
 
 @Composable
 fun UserList(users: List<User>, delete: (Int) -> Unit, display: (User) -> Unit) {
-    LazyColumn(Modifier.fillMaxWidth().padding(bottom = 80.dp)) {
+    LazyColumn(Modifier
+        .fillMaxWidth()
+        .padding(bottom = 80.dp)) {
         item { UserTitleRow() }
         items(users) { u -> UserRow(u, { delete(u.id) }, { display(u) }) }
     }
@@ -175,9 +172,11 @@ fun UserList(users: List<User>, delete: (Int) -> Unit, display: (User) -> Unit) 
 
 @Composable
 fun UserRow(user: User, delete: (Int) -> Unit, display: (User) -> Unit) {
-    Row(Modifier
-        .fillMaxWidth()
-        .padding(5.dp)) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
         Text(user.id.toString(), Modifier.weight(0.1f), fontSize = 22.sp)
         Text(user.name, Modifier.weight(0.2f), fontSize = 22.sp)
         Text(
@@ -201,10 +200,12 @@ fun UserRow(user: User, delete: (Int) -> Unit, display: (User) -> Unit) {
 
 @Composable
 fun UserTitleRow() {
-    Row(Modifier
-        .background(Color.LightGray)
-        .fillMaxWidth()
-        .padding(5.dp)) {
+    Row(
+        Modifier
+            .background(Color.LightGray)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
         Text("Id", color = Color.White, modifier = Modifier.weight(0.1f), fontSize = 22.sp)
         Text("Name", color = Color.White, modifier = Modifier.weight(0.2f), fontSize = 22.sp)
 
@@ -214,8 +215,7 @@ fun UserTitleRow() {
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+    navController: NavHostController, modifier: Modifier = Modifier
 ) {
     val viewModel: UserViewModel = hiltViewModel()
     NavHost(navController = navController, startDestination = Destinations.One) {

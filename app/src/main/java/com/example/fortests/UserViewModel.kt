@@ -11,20 +11,15 @@ import com.example.fortests.db.User
 import com.example.fortests.db.UserRepository
 import com.example.fortests.db.UserRoomDatabase
 import com.example.fortests.duckrepo.DuckImagesRepo
-import com.example.fortests.second.DuckViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    application: Application,
-    private val duckImagesRepo: DuckImagesRepo
+    application: Application, private val duckImagesRepo: DuckImagesRepo
 ) : ViewModel() {
 
     val userList: LiveData<List<User>>
@@ -51,7 +46,7 @@ class UserViewModel @Inject constructor(
     fun fetchAllImagesCount(): Int {
         viewModelScope.launch {
             image_сount = duckImagesRepo.fetchAmountOfImages()
-             }
+        }
         return image_сount
     }
 
@@ -79,6 +74,7 @@ class UserViewModel @Inject constructor(
             }
         }
     }
+
     fun deleteUser(id: Int) {
         imagesIds--
         repository.deleteUser(id)

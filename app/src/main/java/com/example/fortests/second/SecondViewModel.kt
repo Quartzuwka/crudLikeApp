@@ -14,8 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SecondViewModel @Inject constructor(
-    application: Application,
-    private val duckImagesRepo: DuckImagesRepo
+    application: Application, private val duckImagesRepo: DuckImagesRepo
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow<DuckViewState>(DuckViewState.Loading)
@@ -44,4 +43,6 @@ class SecondViewModel @Inject constructor(
         }
 
     }
+
 }
+

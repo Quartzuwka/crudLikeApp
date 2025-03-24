@@ -10,8 +10,9 @@ class User {
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "userId")
     var id: Int = 0
+
     @ColumnInfo(name = "userName")
-    var name: String=""
+    var name: String = ""
 
 
 //    constructor(name: String, age: Int) : this(0, name, age)

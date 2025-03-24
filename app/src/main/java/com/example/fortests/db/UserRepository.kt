@@ -24,11 +24,12 @@ class UserRepository(private val userDao: UserDao) {
         userDao.insertAll(users)
     }
 
-    fun deleteUser(id:Int) {
+    fun deleteUser(id: Int) {
         coroutineScope.launch(Dispatchers.IO) {
             userDao.deleteUser(id)
         }
     }
+
     fun deleteAll() {
         coroutineScope.launch(Dispatchers.IO) {
             userDao.deleteAll()
