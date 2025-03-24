@@ -30,7 +30,10 @@ sealed interface DuckViewState {
 }
 
 @Composable
-fun SecondScreen(viewModel: SecondViewModel = hiltViewModel()) {
+fun SecondScreen(
+    viewModel: SecondViewModel = hiltViewModel(),
+    onDuckClicked: (str: String) -> Unit
+) {
     val viewState by viewModel.viewState.collectAsState()
 
     LaunchedEffect(key1 = viewModel, block = { viewModel.fetchInitialImages() })
@@ -80,7 +83,7 @@ fun SecondScreen(viewModel: SecondViewModel = hiltViewModel()) {
                             items = state.ducks
                         ) { duck ->
                             DuckImage(
-                                modifier = Modifier,
+                                onClick = { onDuckClicked(duck) },
                                 imageUrl = "https://random-d.uk/api/${duck}.jpg"
                             )
                         }

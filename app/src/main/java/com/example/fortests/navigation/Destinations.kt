@@ -15,6 +15,10 @@ sealed class Destinations {
     @Serializable
     data object Two : Destinations()
 
+    @Serializable
+    data class Three(
+        val img: String,
+    ) : Destinations()
 }
 
 enum class TopLevelDestinations(

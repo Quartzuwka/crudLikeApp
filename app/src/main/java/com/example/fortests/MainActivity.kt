@@ -48,11 +48,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.fortests.components.RandomDuckImage
 import com.example.fortests.db.User
 import com.example.fortests.navigation.Destinations
 import com.example.fortests.navigation.TopLevelDestinations
 import com.example.fortests.second.SecondScreen
+import com.example.fortests.third.DuckOnClick
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -224,7 +226,18 @@ fun AppNavigation(
             Main(viewModel)
         }
         composable<Destinations.Two> {
-            SecondScreen()
+            SecondScreen() { img ->
+                navController.navigate(Destinations.Three(img)) {
+                    launchSingleTop = true
+                }
+            }
+        }
+        composable<Destinations.Three> { backStackEntry ->
+            val image: Destinations.Three = backStackEntry.toRoute()
+
+            DuckOnClick(image.img) {
+                navController.navigateUp()
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.fortests.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -20,12 +21,13 @@ fun RandomDuckImage(imageUrl: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun DuckImage(imageUrl: String, modifier: Modifier = Modifier) {
+fun DuckImage(imageUrl: String, onClick: () -> Unit) {
     AsyncImage(
         model = imageUrl,
         contentDescription = "Duck image",
-        modifier = modifier
+        modifier = Modifier
             .height(200.dp)
             .width(200.dp)
+            .clickable(onClick = onClick)
     )
 }
