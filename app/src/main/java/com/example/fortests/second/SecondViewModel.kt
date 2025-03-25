@@ -37,7 +37,6 @@ class SecondViewModel @Inject constructor(
                     val updatedDucks = currentState.ducks + data // Добавляем новые данные
                     DuckViewState.GridDisplay(ducks = updatedDucks)
                 }
-
                 else -> currentState // Возвращаем исходное состояние, если оно не GridDisplay
             }
         }

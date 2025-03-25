@@ -51,6 +51,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.fortests.components.RandomDuckImage
 import com.example.fortests.db.User
+import com.example.fortests.fourth.FavoritesScreen
+import com.example.fortests.fourth.FavoritesViewModel
 import com.example.fortests.navigation.Destinations
 import com.example.fortests.navigation.TopLevelDestinations
 import com.example.fortests.second.SecondScreen
@@ -219,11 +221,12 @@ fun UserTitleRow() {
 fun AppNavigation(
     navController: NavHostController, modifier: Modifier = Modifier
 ) {
-    val viewModel: UserViewModel = hiltViewModel()
+    val userViewModel: UserViewModel = hiltViewModel()
+    val favoritesViewModel: FavoritesViewModel = viewModel()
     NavHost(navController = navController, startDestination = Destinations.One) {
 
         composable<Destinations.One> {
-            Main(viewModel)
+            Main(userViewModel)
         }
         composable<Destinations.Two> {
             SecondScreen() { img ->
@@ -235,9 +238,15 @@ fun AppNavigation(
         composable<Destinations.Three> { backStackEntry ->
             val image: Destinations.Three = backStackEntry.toRoute()
 
-            DuckOnClick(image.img) {
+            DuckOnClick(img = image.img, vm = favoritesViewModel, onBackPressed =  {
                 navController.navigateUp()
             }
+            )
+        }
+        composable<Destinations.Favorites> {
+            FavoritesScreen(onClick = { img ->
+                navController.navigate(Destinations.Three(img))
+            }, vm = favoritesViewModel)
         }
     }
 }

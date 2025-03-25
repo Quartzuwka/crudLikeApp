@@ -1,8 +1,10 @@
 package com.example.fortests.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -19,6 +21,9 @@ sealed class Destinations {
     data class Three(
         val img: String,
     ) : Destinations()
+
+    @Serializable
+    data object Favorites : Destinations()
 }
 
 enum class TopLevelDestinations(
@@ -38,5 +43,11 @@ enum class TopLevelDestinations(
         selectedIcon = Icons.Filled.Search,
         unselectedIcon = Icons.Outlined.Search,
         route = Destinations.Two
+    ),
+    ThirdRoute(
+        label = "Favorites",
+        selectedIcon = Icons.Filled.Favorite,
+        unselectedIcon = Icons.Outlined.FavoriteBorder,
+        route = Destinations.Favorites
     )
 }
