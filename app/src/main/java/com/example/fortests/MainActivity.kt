@@ -1,5 +1,6 @@
 package com.example.fortests
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,12 +34,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -56,6 +60,7 @@ import com.example.fortests.fourth.FavoritesViewModel
 import com.example.fortests.navigation.Destinations
 import com.example.fortests.navigation.TopLevelDestinations
 import com.example.fortests.second.SecondScreen
+import com.example.fortests.second.SecondViewModel
 import com.example.fortests.third.DuckOnClick
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -119,23 +124,23 @@ fun BottomBarNav(navController: NavHostController) {
             if (currentDestination != null) {
                 NavigationBarItem(
                     selected = isSelected, colors = NavigationBarItemColors(
-                    selectedIconColor = Color(0xFF232222),
-                    selectedTextColor = Color(0xFF999797),
-                    selectedIndicatorColor = Color(0xFFF2EDED),
-                    unselectedIconColor = Color(0xFFB0ACAC),
-                    unselectedTextColor = Color(0xFF625F5F),
-                    disabledIconColor = Color.Green,
-                    disabledTextColor = Color.Green
-                ), onClick = {
-                    navController.navigate(bottomNavigationItem.route)
-                }, icon = {
-                    Icon(
-                        imageVector = if (isSelected) bottomNavigationItem.selectedIcon else bottomNavigationItem.unselectedIcon,
-                        contentDescription = bottomNavigationItem.label
-                    )
-                }, alwaysShowLabel = isSelected, label = {
-                    Text(bottomNavigationItem.label)
-                })
+                        selectedIconColor = Color(0xFF232222),
+                        selectedTextColor = Color(0xFF999797),
+                        selectedIndicatorColor = Color(0xFFF2EDED),
+                        unselectedIconColor = Color(0xFFB0ACAC),
+                        unselectedTextColor = Color(0xFF625F5F),
+                        disabledIconColor = Color.Green,
+                        disabledTextColor = Color.Green
+                    ), onClick = {
+                        navController.navigate(bottomNavigationItem.route)
+                    }, icon = {
+                        Icon(
+                            imageVector = if (isSelected) bottomNavigationItem.selectedIcon else bottomNavigationItem.unselectedIcon,
+                            contentDescription = bottomNavigationItem.label
+                        )
+                    }, alwaysShowLabel = isSelected, label = {
+                        Text(bottomNavigationItem.label)
+                    })
             }
         }
     }
@@ -166,9 +171,11 @@ fun Main(vm: UserViewModel = viewModel()) {
 
 @Composable
 fun UserList(users: List<User>, delete: (Int) -> Unit, display: (User) -> Unit) {
-    LazyColumn(Modifier
-        .fillMaxWidth()
-        .padding(bottom = 80.dp)) {
+    LazyColumn(
+        Modifier
+            .fillMaxWidth()
+            .padding(bottom = 80.dp)
+    ) {
         item { UserTitleRow() }
         items(users) { u -> UserRow(u, { delete(u.id) }, { display(u) }) }
     }
@@ -222,26 +229,26 @@ fun AppNavigation(
     navController: NavHostController, modifier: Modifier = Modifier
 ) {
     val userViewModel: UserViewModel = hiltViewModel()
-    val favoritesViewModel: FavoritesViewModel = viewModel()
+    val favoritesViewModel: FavoritesViewModel = hiltViewModel()
+    val secondViewModel: SecondViewModel = hiltViewModel()
     NavHost(navController = navController, startDestination = Destinations.One) {
 
         composable<Destinations.One> {
             Main(userViewModel)
         }
         composable<Destinations.Two> {
-            SecondScreen() { img ->
+            SecondScreen(viewModel = secondViewModel, onDuckClicked = { img ->
                 navController.navigate(Destinations.Three(img)) {
                     launchSingleTop = true
                 }
-            }
+            })
         }
         composable<Destinations.Three> { backStackEntry ->
             val image: Destinations.Three = backStackEntry.toRoute()
 
-            DuckOnClick(img = image.img, vm = favoritesViewModel, onBackPressed =  {
+            DuckOnClick(img = image.img, vm = favoritesViewModel, onBackPressed = {
                 navController.navigateUp()
-            }
-            )
+            })
         }
         composable<Destinations.Favorites> {
             FavoritesScreen(onClick = { img ->

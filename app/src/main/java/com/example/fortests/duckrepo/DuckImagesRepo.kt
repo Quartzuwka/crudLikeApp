@@ -8,11 +8,10 @@ class DuckImagesRepo @Inject constructor(private val ktorClient: KtorClient) {
 
     var list: MutableList<String> = mutableListOf()
 
-
-    suspend fun fetchNextData(): List<String> {
-        for (i in 1..10) list.removeAt(0)
-        return list.take(10)
-    }
+//    suspend fun fetchNextData(): List<String> {
+//        for (i in 1..20) list.removeAt(0)
+//        return list.take(20)
+//    }
 
     suspend fun fetchAmountOfImages(): Int {
         return ktorClient.getAmountOfImages().image_count
@@ -20,7 +19,7 @@ class DuckImagesRepo @Inject constructor(private val ktorClient: KtorClient) {
 
     suspend fun fetchImages(): List<String> {
         list.addAll(ktorClient.getAmountOfImages().images)
-        return list.take(10)
+        return list
     }
 
 }

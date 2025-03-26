@@ -1,6 +1,8 @@
 package com.example.fortests.second
 
 import android.app.Application
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fortests.duckrepo.DuckImagesRepo
@@ -20,28 +22,37 @@ class SecondViewModel @Inject constructor(
     private val _viewState = MutableStateFlow<DuckViewState>(DuckViewState.Loading)
     val viewState: StateFlow<DuckViewState> = _viewState.asStateFlow()
 
-    private val fetchedImages = mutableListOf<String>()
+    val scrollState = mutableStateOf(LazyGridState())
+
+    private val fetchedDucks = mutableListOf<String>()
 
     fun fetchInitialImages() = viewModelScope.launch {
+        if (fetchedDucks.isNotEmpty()) return@launch
         val initialData = duckImagesRepo.fetchImages()
         _viewState.update {
-            DuckViewState.GridDisplay(ducks = initialData)
+            return@update DuckViewState.GridDisplay(ducks = initialData)
         }
     }
 
-    fun fetchNextImages() = viewModelScope.launch {
-        val data = duckImagesRepo.fetchNextData()
-        _viewState.update { currentState ->
-            when (currentState) {
-                is DuckViewState.GridDisplay -> {
-                    val updatedDucks = currentState.ducks + data // Добавляем новые данные
-                    DuckViewState.GridDisplay(ducks = updatedDucks)
-                }
-                else -> currentState // Возвращаем исходное состояние, если оно не GridDisplay
-            }
-        }
+//    fun fetchNextImages() = viewModelScope.launch {
+//        val data = duckImagesRepo.fetchNextData()
+//        _viewState.update { currentState ->
+//            when (currentState) {
+//                is DuckViewState.GridDisplay -> {
+//                    val updatedDucks = currentState.ducks + data // Добавляем новые данные
+//                    DuckViewState.GridDisplay(ducks = updatedDucks)
+//                }
+//
+//                else -> currentState // Возвращаем исходное состояние, если оно не GridDisplay
+//            }
+//        }
+//
+//    }
 
-    }
 
 }
+
+
+//
+//}
 
