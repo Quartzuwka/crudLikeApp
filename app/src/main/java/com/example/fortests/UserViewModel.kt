@@ -43,7 +43,7 @@ class UserViewModel @Inject constructor(
 
     fun fetchAllImagesCount(): Int {
         viewModelScope.launch {
-            image_сount = duckImagesRepo.fetchAmountOfImages()
+            //image_сount = duckImagesRepo.fetchAmountOfImages()
         }
         return image_сount
     }
@@ -56,20 +56,20 @@ class UserViewModel @Inject constructor(
 
     fun loadImages() {
         viewModelScope.launch {
-            val images = duckImagesRepo.fetchImages()
-            if (!images.isNullOrEmpty()) {
-                // Создаем список пользователей
-                val users = images.shuffled().take(10).mapIndexed { index, imageName ->
-                    imagesIds++
-                    User(
-                        id = imagesIds, // Генерируем id вручную
-                        name = imageName
-                    )
-
-                }
-
-                addMultipleUsers(users)
-            }
+//            val images = duckImagesRepo.fetchImages()
+//            if (!images.isNullOrEmpty()) {
+//                // Создаем список пользователей
+//                val users = images.shuffled().take(10).mapIndexed { index, imageName ->
+//                    imagesIds++
+//                    User(
+//                        id = imagesIds, // Генерируем id вручную
+//                        name = imageName
+//                    )
+//
+//                }
+//
+//                addMultipleUsers(users)
+//            }
         }
     }
 

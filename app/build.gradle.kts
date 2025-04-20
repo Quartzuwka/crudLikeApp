@@ -46,6 +46,10 @@ android {
 }
 
 dependencies {
+    implementation("androidx.paging:paging-runtime-ktx:3.3.6")
+
+    // Paging + Compose
+    implementation("androidx.paging:paging-compose:3.3.6")
 
 
     implementation(libs.bundles.ktor)
