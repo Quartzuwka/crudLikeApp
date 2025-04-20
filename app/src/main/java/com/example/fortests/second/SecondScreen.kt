@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 
 
 import androidx.compose.runtime.Composable
@@ -16,9 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,20 +39,20 @@ fun SecondScreen(
     val scrollState = viewModel.scrollState.value
 
 
-//    val fetchNextPage: Boolean by remember {
-//        derivedStateOf {
-//            val currentCharacterCount =
-//                (viewState as? DuckViewState.GridDisplay)?.ducks?.size
-//                    ?: return@derivedStateOf false
-//            val lastDisplayedIndex = scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-//                ?: return@derivedStateOf false
-//            return@derivedStateOf lastDisplayedIndex >= currentCharacterCount - 20
-//        }
-//    }
-//
-//    LaunchedEffect(key1 = fetchNextPage, block = {
-//        if (fetchNextPage) viewModel.fetchNextImages()
-//    })
+    val fetchNextImages: Boolean by remember {
+        derivedStateOf {
+            val currentCharacterCount =
+                (viewState as? DuckViewState.GridDisplay)?.ducks?.size
+                    ?: return@derivedStateOf false
+            val lastDisplayedIndex = scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                ?: return@derivedStateOf false
+            return@derivedStateOf lastDisplayedIndex+1 == currentCharacterCount
+        }
+    }
+
+    LaunchedEffect(key1 = fetchNextImages, block = {
+        if (fetchNextImages) viewModel.fetchNextImages()
+    })
 
 
     when (val state = viewState) {

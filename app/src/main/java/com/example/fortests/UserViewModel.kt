@@ -35,10 +35,8 @@ class UserViewModel @Inject constructor(
         val userDao = userDb.userDao()
         repository = UserRepository(userDao)
         userList = repository.userList
-        viewModelScope.launch {
-            imagesIds = withContext(Dispatchers.IO) {
-                repository.getMaxId()
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            imagesIds = repository.getMaxId()
         }
     }
 
@@ -58,7 +56,7 @@ class UserViewModel @Inject constructor(
 
     fun loadImages() {
         viewModelScope.launch {
-            val images = duckImagesRepo.fetchImages() // Получаем список строк
+            val images = duckImagesRepo.fetchImages()
             if (!images.isNullOrEmpty()) {
                 // Создаем список пользователей
                 val users = images.shuffled().take(10).mapIndexed { index, imageName ->
